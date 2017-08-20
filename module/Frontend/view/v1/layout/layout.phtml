@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+<?php echo $this->MyHeadTitle(); ?>
+    <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+    <meta property="fb:app_id" content="265611626917890"/>
+
+	<?php
+    echo $this->headMeta();
+    ?>
+	
+    <link rel="search" type="application/opensearchdescription+xml" title="Tìm thủ thuật -Tuoitre.mobi"
+          href="opensearch.xml">
+
+    <link rel=stylesheet href='<?php echo STATIC_URL . '/f/' . FRONTEND_TEMPLATE . '/css/style.css'; ?>'
+          type='text/css'/>
+
+    <meta name="apple-mobile-web-app-title" content="Tuoitre.mobi"/>
+    <meta name="application-name" content="Tuoitre.mobi"/>
+    <link rel="apple-touch-icon" href="favicon.192.png"/>
+    <link rel="icon" sizes="192x192" href="<?php echo STATIC_URL . '/f/' . FRONTEND_TEMPLATE . '/images/favicon.png'; ?>"/>
+
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({
+            google_ad_client: "ca-pub-5263187211037791",
+            enable_page_level_ads: true
+        });
+    </script>
+	
+	<script>
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+	  ga('create', 'UA-97917003-1', 'auto');
+	  ga('send', 'pageview');
+	</script>
+</head>
+
+<?php
+$paramsRouter = $this->getHelperPluginManager()->getServiceLocator()->get('Application')->getMvcEvent()->getRouteMatch()->getParams();
+$routeName = $this->getHelperPluginManager()->getServiceLocator()->get('Application')->getMvcEvent()->getRouteMatch();
+$controller = $paramsRouter['__CONTROLLER__'];
+$action = $paramsRouter['action'];
+?>
+
+<body class="showheader">
+<div id="main" class="cp7">
+    <?php echo \My\Minifier\HtmlMin::minify($this->render('frontend/header')); ?>
+
+    <div class="clear"></div>
+
+    <!-- CONTENT -->
+    <div id="contentMain" class="clearfix">
+        <?php echo \My\Minifier\HtmlMin::minify($this->layout()->content); ?>
+        <div class="sidebar">
+            <?php echo \My\Minifier\HtmlMin::minify($this->render('frontend/sidebar')); ?>
+        </div>
+        <div class="leftbar">
+            <?php echo \My\Minifier\HtmlMin::minify($this->render('frontend/leftbar')); ?>
+        </div>
+    </div>
+
+    <div class="clear"></div>
+
+    <?php echo \My\Minifier\HtmlMin::minify($this->render('frontend/footer')); ?>
+</div>
+
+<script type="text/javascript" src="<?php echo STATIC_URL . '/f/' . FRONTEND_TEMPLATE . '/js/library/main.js'; ?>"></script>
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+</body>
+</html>

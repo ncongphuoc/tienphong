@@ -1,0 +1,133 @@
+<?php
+$content_detail = $this->arrContent;
+$category_detail = $this->arrCategoryDetail;
+$category_parent = $this->arrCategoryParent;
+$arrKeywordList = $this->arrKeywordList;
+//
+$arrContentCate = $this->arrContentCate;
+$arrContentNew = $this->arrContentNew;
+
+?>
+<div class="content post-detail">
+    <h1>
+        <?php echo $content_detail['cont_title'] ?>
+    </h1>
+    <div class="rate-view top">
+        <ul>
+            <li class="raty" itemscope="" itemtype="http://data-vocabulary.org/Review-aggregate">
+                <meta itemprop="itemreviewed" content="22 phẩm chất để trở thành một nhà lãnh đạo tuyệt vời (Phần 2)">
+                <meta itemprop="rating" content="3">
+                <meta itemprop="votes" content="1">
+                <span class=" rating" data-rating="3" data-id="131786" id="raty-3" style="width: 100px; cursor: pointer;">
+                    <img id="raty-3-1" src="<?php echo STATIC_URL . '/f/' . FRONTEND_TEMPLATE . '/images/star-on.png' ?>" alt="1" title="bad" class="raty-3">&nbsp;
+                    <img id="raty-3-2" src="<?php echo STATIC_URL . '/f/' . FRONTEND_TEMPLATE . '/images/star-on.png' ?>" alt="2" title="poor" class="raty-3">&nbsp;
+                    <img id="raty-3-3" src="<?php echo STATIC_URL . '/f/' . FRONTEND_TEMPLATE . '/images/star-on.png' ?>" alt="3" title="regular" class="raty-3">&nbsp;
+                    <img id="raty-3-4" src="<?php echo STATIC_URL . '/f/' . FRONTEND_TEMPLATE . '/images/star-on.png' ?>" alt="4" title="good" class="raty-3">&nbsp;
+                    <img id="raty-3-5" src="<?php echo STATIC_URL . '/f/' . FRONTEND_TEMPLATE . '/images/star-off.png' ?>" alt="5" title="gorgeous" class="raty-3">
+                    <input id="raty-3-score" type="hidden" name="score" value="3">
+                </span>
+            </li>
+            <li class="view"><?php echo $content_detail['cont_views'] ?></li>
+            <li class="share">
+                <div class="sharebox">
+                    <div class="sharetoolbox">
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="breadcrumbs info-detail">
+        <span class="first breadcrumb">
+            <a href="/"></a>
+        </span>
+        <?php if($category_parent){ ?>
+        <span typeof="v:Breadcrumb" class="breadcrumb">
+            <a rel="v:url" property="v:title" href="<?php echo $this->serverUrl() . $this->Url('category', ['cateSlug' => $category_parent['cate_slug'], 'cateId' => $category_parent['cate_id']]) ?>">
+                <?php echo $category_parent['cate_name'] ?></a>
+        </span>
+        <?php } ?>
+
+        <?php if($category_detail){ ?>
+            <span typeof="v:Breadcrumb" class="breadcrumb">
+            <a rel="v:url" property="v:title" href="<?php echo $this->serverUrl() . $this->Url('category', ['cateSlug' => $category_detail['cate_slug'], 'cateId' => $category_detail['cate_id']]) ?>">
+                <?php echo $category_detail['cate_name'] ?></a>
+        </span>
+        <?php } ?>
+    </div>
+
+    <?php echo $content_detail['cont_detail'] ?>
+
+    <div class="author-info clearfix">
+        <span class="date">Cập nhật: <?php echo date('d-m-Y',$content_detail['created_date']); ?></span>
+    </div>
+
+    <?php if($arrKeywordList) { ?>
+    <div class="tag">
+        <ul class="td-tags clearfix">
+            <li><span>Xem thêm: </span></li>
+            <?php foreach ($arrKeywordList as $keyword) { ?>
+                <li>
+                    <a href="<?php echo $this->serverUrl() . $this->Url('keyword', ['keyId' => $keyword['key_id'],'keySlug' => $keyword['key_slug']]) ?>"><?php echo $keyword['key_name'] ?></a>
+                </li>
+            <?php } ?>
+        </ul>
+    </div>
+    <?php } ?>
+
+    <div id="adsviewbottom" class="adbox">
+<!--        <img src="--><?php //echo STATIC_URL . '/f/' . FRONTEND_TEMPLATE . '/images/300x250.jpg'; ?><!--">-->
+        <ins class="adsbygoogle"
+             style="display:inline-block;width: 300px;height: 350px"
+             data-ad-client="ca-pub-5263187211037791"
+             data-ad-slot="8521797908"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+    <?php if($arrContentCate){ ?>
+    <div class="similaritems listitems">
+        <div class="title">Tham khảo thêm</div>
+        <ul>
+            <?php foreach ($arrContentCate as $content): ?>
+            <li>
+                <a href="<?php echo $this->serverUrl() . $this->Url('view-content', ['contentSlug' => $content['cont_slug'], 'contentId' => $content['cont_id']]) ?>">
+                    <?php echo $content['cont_title']; ?>
+                </a>
+            </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+    <?php } ?>
+    
+    <div class="comments">
+    </div>
+
+    <div id="adsinfeed" class="adbox" style="margin-bottom:20px">
+<!--        <img src="--><?php //echo STATIC_URL . '/f/' . FRONTEND_TEMPLATE . '/images/300x250.jpg'; ?><!--">-->
+        <ins class="adsbygoogle"
+             style="display:inline-block;width: 300px;height: 250px"
+             data-ad-client="ca-pub-5263187211037791"
+             data-ad-slot="8521797908"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+
+    <?php if($arrContentNew){ ?>
+    <div class="more-news clearfix">
+        <div class="hd">Bài viết mới nhất</div>
+        <ul>
+            <?php foreach ($arrContentNew as $content): ?>
+                <li>
+                    <a href="<?php echo $this->serverUrl() . $this->Url('view-content', ['contentSlug' => $content['cont_slug'], 'contentId' => $content['cont_id']]) ?>">
+                        <span class="thumb">
+                            <img src="<?php echo $content['cont_main_image']; ?>">
+                        </span>
+                        <span><?php echo $content['cont_title']; ?></span>
+                    </a>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+    <?php } ?>
+</div>

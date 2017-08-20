@@ -1,0 +1,138 @@
+<?php
+$arr_content = $this->arrContentList;
+$keyDetail = $this->arrKeyDetail;
+
+$content_gg = json_decode($keyDetail['content_crawler'], true);
+?>
+
+<div class="content">
+    <h1><?php echo $keyDetail['key_name'] ?></h1>
+    <div id="adindexcenter" class="adbox" style="margin-bottom:20px;">
+<!--        <img src="--><?php //echo STATIC_URL . '/f/' . FRONTEND_TEMPLATE . '/images/640x60.png'; ?><!--">-->
+        <ins class="adsbygoogle"
+             style="display:inline-block;width: 640px;height: 60px"
+             data-ad-client="ca-pub-5263187211037791"
+             data-ad-slot="8521797908"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+
+    <div class="listview clearfix">
+        <ul>
+            <?php for($i = 0; $i <= 2; $i ++):
+                    if(isset($arr_content[$i])):
+                    ?>
+                    <li class="listitem clearfix">
+                        <a class="title"
+                           href="<?php echo $this->serverUrl() . $this->Url('view-content', ['contentSlug' => $arr_content[$i]['cont_slug'], 'contentId' => $arr_content[$i]['cont_id']]) ?>">
+                            <?php echo $arr_content[$i]['cont_title'] ?>
+                        </a>
+                        <a class="thumb"
+                           href="<?php echo $this->serverUrl() . $this->Url('view-content', ['contentSlug' => $arr_content[$i]['cont_slug'], 'contentId' => $arr_content[$i]['cont_id']]) ?>">
+                            <img src="<?php echo $arr_content[$i]['cont_main_image'] ?>"
+                                 alt="<?php echo $arr_content[$i]['cont_title'] ?>">
+                        </a>
+                        <div class="desc"><?php echo $arr_content[$i]['cont_description'] ?></div>
+
+                        <?php if($arr_content[$i]['list_keyword']){ ?>
+                        <div class="tag">
+                            <ul class="td-tags-keyword clearfix">
+                                <li><span>Xem thêm: </span></li>
+                                <?php foreach ($arr_content[$i]['list_keyword'] as $keyword) { ?>
+                                    <li>
+                                        <a href="<?php echo $this->serverUrl() . $this->Url('keyword', ['keyId' => $keyword['key_id'],'keySlug' => $keyword['key_slug']]) ?>"><?php echo $keyword['key_name'] ?></a>
+                                    </li>
+                                <?php } ?>
+                            </ul>
+                        </div>
+                        <?php } ?>
+
+                    </li>
+                <?php endif; endfor;
+            ?>
+        </ul>
+    </div>
+
+    <div id="adindexcenter" class="adbox" style="margin-bottom:20px;">
+<!--        <img src="--><?php //echo STATIC_URL . '/f/' . FRONTEND_TEMPLATE . '/images/640x60.png'; ?><!--">-->
+                <ins class="adsbygoogle"
+                     style="display:inline-block;width: 640px;height: 60px"
+                     data-ad-client="ca-pub-5263187211037791"
+                     data-ad-slot="8521797908"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+    </div>
+
+    <?php if(is_array($content_gg) && !empty($content_gg)){ ?>
+    <div class="listview clearfix">
+        <ul>
+            <?php foreach($content_gg as $content):
+                ?>
+                <li class="listitem clearfix">
+                    <a class="title"
+                       href="<?php echo $content['href'] ?>">
+                        <?php echo $content['title'] ?>
+                    </a>
+                    <a class="thumb" rel="nofollow"
+                        href="<?php echo $content['href'] ?>">
+                        <img src="<?php echo STATIC_URL . '/f/v1/images/no-default-thumbnail.png' ?>"
+                             alt="<?php echo $content['title'] ?>">
+                    </a>
+                    <div class="desc"><?php echo $content['description'] ?></div>
+
+                </li>
+            <?php endforeach;
+            ?>
+        </ul>
+    </div>
+
+    <div id="adindexcenter" class="adbox" style="margin-bottom:20px;">
+<!--        <img src="--><?php //echo STATIC_URL . '/f/' . FRONTEND_TEMPLATE . '/images/640x60.png'; ?><!--">-->
+                <ins class="adsbygoogle"
+                     style="display:inline-block;width: 640px;height: 60px"
+                     data-ad-client="ca-pub-5263187211037791"
+                     data-ad-slot="8521797908"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+    </div>
+    <?php } ?>
+
+    <div class="listview clearfix">
+        <ul>
+            <?php for($i = 3; $i <= 9; $i ++):
+                if(isset($arr_content[$i])):
+                ?>
+                <li class="listitem clearfix">
+                    <a class="title"
+                       href="<?php echo $this->serverUrl() . $this->Url('view-content', ['contentSlug' => $arr_content[$i]['cont_slug'], 'contentId' => $arr_content[$i]['cont_id']]) ?>">
+                        <?php echo $arr_content[$i]['cont_title'] ?>
+                    </a>
+                    <a class="thumb"
+                       href="<?php echo $this->serverUrl() . $this->Url('view-content', ['contentSlug' => $arr_content[$i]['cont_slug'], 'contentId' => $arr_content[$i]['cont_id']]) ?>">
+                        <img src="<?php echo $arr_content[$i]['cont_main_image'] ?>"
+                             alt="<?php echo $arr_content[$i]['cont_title'] ?>">
+                    </a>
+                    <div class="desc"><?php echo $arr_content[$i]['cont_description'] ?></div>
+
+                    <?php if($arr_content[$i]['list_keyword']){ ?>
+                        <div class="tag">
+                            <ul class="td-tags-keyword clearfix">
+                                <li><span>Xem thêm: </span></li>
+                                <?php foreach ($arr_content[$i]['list_keyword'] as $keyword) { ?>
+                                    <li>
+                                        <a href="<?php echo $this->serverUrl() . $this->Url('keyword', ['keyId' => $keyword['key_id'],'keySlug' => $keyword['key_slug']]) ?>"><?php echo $keyword['key_name'] ?></a>
+                                    </li>
+                                <?php } ?>
+                            </ul>
+                        </div>
+                    <?php } ?>
+
+                </li>
+            <?php endif; endfor;
+            ?>
+        </ul>
+    </div>
+</div>

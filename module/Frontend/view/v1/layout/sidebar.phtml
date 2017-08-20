@@ -1,0 +1,42 @@
+<?php
+$arr_content_hot = unserialize(ARR_CONTENT_HOT_LIST);
+?>
+
+<div id="adrighttop" class="adbox">
+    <!-- 300x250-->
+<!--    <img src="--><?php //echo STATIC_URL . '/f/' . FRONTEND_TEMPLATE . '/images/300x250.jpg'; ?><!--">-->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width: 336px;height: 280px"
+         data-ad-client="ca-pub-5263187211037791"
+         data-ad-slot="8521797908"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+<div class="top-news">
+    <div class="title-top-news">Được xem nhiều</div>
+    <ul>
+        <?php foreach ($arr_content_hot as $content): ?>
+        <li class="item-top">
+            <a href="<?php echo $this->serverUrl() . $this->Url('view-content', ['contentSlug' => $content['cont_slug'], 'contentId' => $content['cont_id']]) ?>">
+                <img src="<?php echo $content['cont_main_image'] ?>"
+                     alt="<?php echo $content['cont_title'] ?>"/>
+                <?php echo $content['cont_title'] ?>
+            </a>
+        </li>
+        <?php endforeach; ?>
+    </ul>
+</div>
+
+<div class="">
+    <!-- 300x600-->
+    <img src="<?php echo STATIC_URL . '/f/' . FRONTEND_TEMPLATE . '/images/300x600.jpg'; ?>">
+    <ins class="adsbygoogle"
+         style="display:inline-block;width: 300px;height: 600px"
+         data-ad-client="ca-pub-5263187211037791"
+         data-ad-slot="8521797908"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>

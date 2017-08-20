@@ -1,0 +1,79 @@
+<?php
+$paramsRouter = $this->getHelperPluginManager()->getServiceLocator()->get('Application')->getMvcEvent()->getRouteMatch()->getParams();
+$routeName = $this->getHelperPluginManager()->getServiceLocator()->get('Application')->getMvcEvent()->getRouteMatch();
+$controller = $paramsRouter['__CONTROLLER__'];
+$action = $paramsRouter['action'];
+$arr_category = unserialize(ARR_CATEGORY_INFO);
+?>
+
+<!-- HEADER -->
+<div id="header">
+    <div class="toplinks">
+        <a href='#' class="icon facebook" target="_blank" rel="nofollow">Facebook</a>
+        <a href='#' class="icon youtube" target="_blank" rel="nofollow">Youtube</a>
+        <a href="#" class="icon googleplus" target="_blank" rel="nofollow">Google Plus</a>
+
+    </div>
+    <div class="headerleft">
+        <a href="<?php echo $this->serverUrl() . $this->Url('home') ?>" id="logo" title=""></a>
+    </div>
+    <div id="searchBox">
+        <form method="get" action="<?php echo $this->serverUrl() . $this->Url('search') ?>" id="cse-search-box">
+            <div>
+
+                <input type="text" name="word" size="55" id="q" placeholder="Tìm kiếm"/>
+                <input type="submit" value="Tìm" id="btnHeaderFind"/>
+
+            </div>
+        </form>
+    </div>
+    <a class="toggle menu"></a>
+    <a class="toggle search"></a>
+</div>
+<!-- END HEADER -->
+
+<!-- MENU -->
+<div id="mainmenu">
+    <ul id="topnav" class="navigation clearfix">
+        <li class="item all">
+            <a href="<?php echo $this->serverUrl() . $this->Url('home') ?>">
+                <img src="<?php echo STATIC_URL . '/f/' . FRONTEND_TEMPLATE . '/images/icon/home.png'; ?>" /> Trang chủ
+            </a>
+        </li>
+
+        <li class="item tax-cong-nghe">
+            <a href='<?php echo $this->serverUrl() . $this->Url('category', ['cateSlug' => $arr_category[1]['cate_slug'], 'cateId' => $arr_category[1]['cate_id']]) ?>'>
+                <img src="<?php echo STATIC_URL . '/f/' . FRONTEND_TEMPLATE . '/images/icon/technology.png'; ?>" />
+                Công nghệ
+            </a>
+        </li>
+        <li class="item tax-khoa-hoc">
+            <a href='<?php echo $this->serverUrl() . $this->Url('category', ['cateSlug' => $arr_category[2]['cate_slug'], 'cateId' => $arr_category[2]['cate_id']]) ?>'>
+                <img src="<?php echo STATIC_URL . '/f/' . FRONTEND_TEMPLATE . '/images/icon/Physics-64.png'; ?>" />
+                Khoa học
+            </a>
+        </li>
+        <li class="item tax-cuoc-song">
+            <a href='<?php echo $this->serverUrl() . $this->Url('category', ['cateSlug' => $arr_category[10]['cate_slug'], 'cateId' => $arr_category[10]['cate_id']]) ?>'>
+                <img src="<?php echo STATIC_URL . '/f/' . FRONTEND_TEMPLATE . '/images/icon/LifeCycle.png'; ?>" />
+                Cuộc sống
+            </a>
+        </li>
+        <li class="item tax-smartphone">
+            <a href='<?php echo $this->serverUrl() . $this->Url('category', ['cateSlug' => $arr_category[4]['cate_slug'], 'cateId' => $arr_category[4]['cate_id']]) ?>'>
+                <img src="<?php echo STATIC_URL . '/f/' . FRONTEND_TEMPLATE . '/images/icon/apple.png'; ?>" />
+                Smartphone
+            </a>
+        </li>
+        <li class="item tax-keyword">
+            <a href='<?php echo $this->serverUrl() . $this->Url('list-keyword', ['page' => 1]);?>'>
+                <img src="<?php echo STATIC_URL . '/f/' . FRONTEND_TEMPLATE . '/images/icon/Greentech.png'; ?>" />
+                Keyword
+            </a>
+        </li>
+    </ul>
+</div>
+<!-- END MENU -->
+
+
+ 

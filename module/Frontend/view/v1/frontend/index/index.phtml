@@ -1,0 +1,9 @@
+<div class="content">
+    <div class="ListNews">
+        <?php
+        for ($i = 1; $i <= 3; $i++) {
+            echo \My\Minifier\HtmlMin::minify($this->render('frontend/index/template' . $i));
+        }
+        ?>
+    </div>
+</div>

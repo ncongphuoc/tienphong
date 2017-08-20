@@ -1,0 +1,9 @@
+/nbproject/
+/public/
+/vendor/
+/composer.phar
+/composer.lock
+.idea/
+/static/uploads/content
+config/
+logs

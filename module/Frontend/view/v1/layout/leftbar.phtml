@@ -1,0 +1,58 @@
+<?php
+$paramsRouter = $this->getHelperPluginManager()->getServiceLocator()->get('Application')->getMvcEvent()->getRouteMatch()->getParams();
+$routeName = $this->getHelperPluginManager()->getServiceLocator()->get('Application')->getMvcEvent()->getRouteMatch();
+$controller = $paramsRouter['__CONTROLLER__'];
+$action = $paramsRouter['action'];
+$cateId = (isset($paramsRouter['cateId'])) ? $paramsRouter['cateId'] : '';
+//
+$arr_category_parent = unserialize(ARR_CATEGORY_PARENT);
+$arr_category_child = unserialize(ARR_CATEGORY_CHILD);
+$arr_category_info = unserialize(ARR_CATEGORY_INFO);
+$tree_cate = unserialize(ARR_TREE_CATEGORY);
+//sort tree cate
+if ($cateId) {
+    $temp_tree = $tree_cate;
+    $arr_cate_active = array();
+    $arr_cate = array();
+    foreach ($temp_tree as $parent_id => $arr_child) {
+        if ($cateId == $parent_id || in_array($cateId, $arr_child)) {
+            $arr_cate_active = array(
+                $parent_id => $temp_tree[$parent_id]
+            );
+        } else {
+            $arr_cate[$parent_id] = $temp_tree[$parent_id];
+        }
+    }
+    $tree_cate = $arr_cate_active + $arr_cate;
+}
+?>
+
+<div class="navbox sidenav sticky">
+    <ul class="navigation clearfix">
+        <?php foreach ($tree_cate as $cate_parent_id => $arr_cate_child): ?>
+
+            <li class="tax-<?php echo $arr_category_info[$cate_parent_id]['cate_slug'] ?>">
+                <a href="<?php echo $this->serverUrl() . $this->Url('category', ['cateSlug' => $arr_category_info[$cate_parent_id]['cate_slug'], 'cateId' => $arr_category_info[$cate_parent_id]['cate_id']]) ?>">
+                    <img
+                        src="<?php echo STATIC_URL . '/f/' . FRONTEND_TEMPLATE . '/images/icon/' . $arr_category_info[$cate_parent_id]['cate_icon'] . '.png'; ?>"/>
+                    <?php echo $arr_category_info[$cate_parent_id]['cate_name'] ?>
+                </a>
+                <?php if ($arr_cate_child): ?>
+                    <ul>
+                        <?php foreach ($arr_cate_child as $cate_child): ?>
+                            <li class="tax-<?php echo $arr_category_info[$cate_child]['cate_slug'] ?> <?php echo ($cate_child == $cateId) ? 'active' : '' ?>">
+                                <a href="<?php echo $this->serverUrl() . $this->Url('category', ['cateSlug' => $arr_category_info[$cate_child]['cate_slug'], 'cateId' => $arr_category_info[$cate_child]['cate_id']]) ?>">
+                                    <img
+                                        src="<?php echo STATIC_URL . '/f/' . FRONTEND_TEMPLATE . '/images/icon/' . $arr_category_info[$cate_child]['cate_icon'] . '.png'; ?>"/>
+                                    <?php echo $arr_category_info[$cate_child]['cate_name'] ?>
+                                </a>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                <?php endif; ?>
+            </li>
+
+        <?php endforeach; ?>
+
+    </ul>
+</div>

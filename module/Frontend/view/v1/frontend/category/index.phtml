@@ -1,0 +1,95 @@
+<?php
+$arr_content = $this->arrContentList;
+
+$category_detail = $this->arrCategoryDetail;
+$category_parent = $this->arrCategoryParent;
+
+$arr_keyword = $this->arrKeywordList;
+?>
+
+<div class="content">
+    <div id="adindexcenter" class="adbox" style="margin-bottom:20px;">
+<!--        <img src="--><?php //echo STATIC_URL . '/f/' . FRONTEND_TEMPLATE . '/images/640x60.png'; ?><!--">-->
+        <ins class="adsbygoogle"
+             style="display:inline-block;width: 640px;height: 60px"
+             data-ad-client="ca-pub-5263187211037791"
+             data-ad-slot="8521797908"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+    <div class="breadcrumbs info-detail">
+        <span class="first breadcrumb">
+            <a href="/"></a>
+        </span>
+        <?php if($category_parent){ ?>
+            <span typeof="v:Breadcrumb" class="breadcrumb">
+            <a rel="v:url" property="v:title" href="<?php echo $this->serverUrl() . $this->Url('category', ['cateSlug' => $category_parent['cate_slug'], 'cateId' => $category_parent['cate_id']]) ?>">
+                <?php echo $category_parent['cate_name'] ?></a>
+        </span>
+        <?php } ?>
+
+        <?php if($category_detail){ ?>
+            <span typeof="v:Breadcrumb" class="breadcrumb">
+            <a rel="v:url" property="v:title" href="<?php echo $this->serverUrl() . $this->Url('category', ['cateSlug' => $category_detail['cate_slug'], 'cateId' => $category_detail['cate_id']]) ?>">
+                <?php echo $category_detail['cate_name'] ?></a>
+        </span>
+        <?php } ?>
+    </div>
+
+
+    <div class="listview clearfix">
+        <ul>
+            <?php for ($i = 0; $i < 2; $i++):
+                if(isset($arr_content[$i]) && $arr_content[$i]):
+                ?>
+
+                <li class="listitem clearfix">
+                    <a class="title"
+                       href="<?php echo $this->serverUrl() . $this->Url('view-content', ['contentSlug' => $arr_content[$i]['cont_slug'], 'contentId' => $arr_content[$i]['cont_id']]) ?>">
+                        <?php echo $arr_content[$i]['cont_title'] ?>
+                    </a>
+                    <a class="thumb"
+                       href="<?php echo $this->serverUrl() . $this->Url('view-content', ['contentSlug' => $arr_content[$i]['cont_slug'], 'contentId' => $arr_content[$i]['cont_id']]) ?>">
+                        <img src="<?php echo $arr_content[$i]['cont_main_image'] ?>"
+                             alt="<?php echo $arr_content[$i]['cont_title'] ?>">
+                    </a>
+                    <div class="desc"><?php echo $arr_content[$i]['cont_description'] ?></div>
+                </li>
+            <?php endif;
+            endfor;
+            ?>
+        </ul>
+    </div>
+    <div id="adsinfeed" class="adbox" style="margin-bottom:20px">
+
+    </div>
+    <div class="listview clearfix">
+        <ul>
+            <?php for ($i = 2; $i < 10; $i++):
+                if(isset($arr_content[$i]) && $arr_content[$i]){
+                ?>
+                <li class="listitem clearfix">
+                    <a class="title"
+                       href="<?php echo $this->serverUrl() . $this->Url('view-content', ['contentSlug' => $arr_content[$i]['cont_slug'], 'contentId' => $arr_content[$i]['cont_id']]) ?>">
+                        <?php echo $arr_content[$i]['cont_title'] ?>
+                    </a>
+                    <a class="thumb"
+                       href="<?php echo $this->serverUrl() . $this->Url('view-content', ['contentSlug' => $arr_content[$i]['cont_slug'], 'contentId' => $arr_content[$i]['cont_id']]) ?>">
+                        <img src="<?php echo $arr_content[$i]['cont_main_image'] ?>"
+                             alt="<?php echo $arr_content[$i]['cont_title'] ?>">
+                    </a>
+                    <div class="desc"><?php echo $arr_content[$i]['cont_description'] ?></div>
+                </li>
+            <?php } else {
+                    break;
+                }
+            endfor; ?>
+        </ul>
+    </div>
+    <div class="pagination-container">
+        <ul class="pagination">
+            <?php echo $this->paging; ?>
+        </ul>
+    </div>
+</div>
