@@ -12,10 +12,10 @@ class ConsoleController extends MyController
     const IMAGE_DEFAULT = STATIC_URL . '/f/v1/images/no-image-available.jpg';
     const DIV_ADS = '<div id="adsarticletop" class="adbox">
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-		<!-- tuoitre.mobi -->
+		<!-- tienphong.info -->
 		<ins class="adsbygoogle"
 			 style="display:inline-block;width: 336px;height: 280px;"
-			 data-ad-client="ca-pub-5263187211037791"
+			 data-ad-client="ca-pub-9166980393030854"
 			 data-ad-slot="8521797908"></ins>
 		<script>
 		(adsbygoogle = window.adsbygoogle || []).push({});
@@ -41,176 +41,6 @@ class ConsoleController extends MyController
         ob_end_flush();
         ob_flush();
         flush();
-    }
-
-    public function migrateAction()
-    {
-        $params = $this->request->getParams();
-        $intIsCreateIndex = (int)$params['createindex'];
-
-        if (empty($params['type'])) {
-            return General::getColoredString("Unknown type \n", 'light_cyan', 'red');
-        }
-
-        switch ($params['type']) {
-            case 'logs':
-                $this->__migrateLogs($intIsCreateIndex);
-                break;
-
-            case 'content':
-                $this->__migrateContent($intIsCreateIndex);
-                break;
-
-            case 'category' :
-                $this->__migrateCategory($intIsCreateIndex);
-                break;
-            case 'keyword' :
-                $this->__migrateKeyword($intIsCreateIndex);
-                break;
-        }
-        echo General::getColoredString("Index ES sucess", 'light_cyan', 'yellow');
-        return true;
-    }
-
-    public function __migrateCategory($intIsCreateIndex)
-    {
-        $service = $this->serviceLocator->get('My\Models\Category');
-        $intLimit = 1000;
-        $instanceSearch = new \My\Search\Category();
-//        $instanceSearch->createIndex();
-//        die();
-        for ($intPage = 1; $intPage < 10000; $intPage++) {
-            $arrList = $service->getListLimit([], $intPage, $intLimit, 'cate_id ASC');
-            if (empty($arrList)) {
-                break;
-            }
-
-            if ($intPage == 1) {
-                if ($intIsCreateIndex) {
-                    $instanceSearch->createIndex();
-                } else {
-                    $result = $instanceSearch->removeAllDoc();
-                    if (empty($result)) {
-                        $this->flush();
-                        return General::getColoredString("Cannot delete old search index \n", 'light_cyan', 'red');
-                    }
-                }
-            }
-            $arrDocument = [];
-            foreach ($arrList as $arr) {
-                $id = (int)$arr['cate_id'];
-
-                $arrDocument[] = new \Elastica\Document($id, $arr);
-                echo General::getColoredString("Created new document with id = " . $id . " Successfully", 'cyan');
-
-                $this->flush();
-            }
-
-            unset($arrList); //release memory
-            echo General::getColoredString("Migrating " . count($arrDocument) . " documents, please wait...", 'yellow');
-            $this->flush();
-
-            $instanceSearch->add($arrDocument);
-            echo General::getColoredString("Migrated " . count($arrDocument) . " documents successfully", 'blue', 'cyan');
-
-            unset($arrDocument);
-            $this->flush();
-        }
-
-        die('done');
-    }
-
-    public function __migrateContent($intIsCreateIndex)
-    {
-        $serviceContent = $this->serviceLocator->get('My\Models\Content');
-        $intLimit = 200;
-        $instanceSearchContent = new \My\Search\Content();
-//        $instanceSearchContent->createIndex();
-//        die();
-
-        if ($intIsCreateIndex) {
-            $instanceSearchContent->createIndex();
-        } else {
-            $result = $instanceSearchContent->removeAllDoc();
-            if (empty($result)) {
-                $this->flush();
-                return General::getColoredString("Cannot delete old search index \n", 'light_cyan', 'red');
-            }
-        }
-
-        for ($intPage = 1; $intPage < 10000; $intPage++) {
-            $arrContentList = $serviceContent->getListLimit([], $intPage, $intLimit, 'cont_id ASC');
-            if (empty($arrContentList)) {
-                break;
-            }
-            $arrDocument = [];
-            foreach ($arrContentList as $arrContent) {
-                $id = (int)$arrContent['cont_id'];
-
-                $arrDocument[] = new \Elastica\Document($id, $arrContent);
-                echo General::getColoredString("Created new document with cont_id = " . $id . " Successfully", 'cyan');
-
-                $this->flush();
-            }
-
-            unset($arrContentList); //release memory
-            echo General::getColoredString("Migrating " . count($arrDocument) . " documents, please wait...", 'yellow');
-            $this->flush();
-
-            $instanceSearchContent->add($arrDocument);
-            echo General::getColoredString("Migrated " . count($arrDocument) . " documents successfully", 'blue', 'cyan');
-
-            unset($arrDocument);
-            $this->flush();
-        }
-
-        die('done');
-    }
-
-    public function __migrateKeyword($intIsCreateIndex)
-    {
-
-        $serviceKeyword = $this->serviceLocator->get('My\Models\Keyword');
-        $intLimit = 2000;
-        $instanceSearchKeyword = new \My\Search\Keyword();
-
-        if ($intIsCreateIndex) {
-            $instanceSearchKeyword->createIndex();
-        } else {
-            $result = $instanceSearchKeyword->removeAllDoc();
-            if (empty($result)) {
-                $this->flush();
-                return General::getColoredString("Cannot delete old search index \n", 'light_cyan', 'red');
-            }
-        }
-
-        for ($intPage = 1; $intPage < 10000; $intPage++) {
-            $arrList = $serviceKeyword->getListLimit([], $intPage, $intLimit, 'key_id ASC');
-
-            if (empty($arrList)) {
-                break;
-            }
-
-            $arrDocument = [];
-            foreach ($arrList as $arr) {
-                $id = (int)$arr['key_id'];
-                $arrDocument[] = new \Elastica\Document($id, $arr);
-                echo General::getColoredString("Created new document with cont_id = " . $id . " Successfully", 'cyan');
-
-                $this->flush();
-            }
-
-            unset($arrList); //release memory
-            echo General::getColoredString("Migrating " . count($arrDocument) . " documents, please wait...", 'yellow');
-            $this->flush();
-
-            $instanceSearchKeyword->add($arrDocument);
-            echo General::getColoredString("Migrated " . count($arrDocument) . " documents successfully", 'blue', 'cyan');
-
-            unset($arrDocument);
-            $this->flush();
-        }
-        die('done');
     }
 
     public function crawlerKeywordAction()
@@ -586,7 +416,7 @@ class ConsoleController extends MyController
         $doc .= '</urlset>';
         $xml = new \SimpleXMLElement($doc);
         $this->flush();
-        $arrData = ['http://tuoitre.mobi/','http://tuoitre.mobi/danh-sach-tu-khoa/'];
+        $arrData = ['http://tienphong.info/','http://tienphong.info/danh-sach-tu-khoa/'];
         foreach ($arrData as $value) {
             $href = $value;
             $url = $xml->addChild('url');
@@ -894,29 +724,16 @@ class ConsoleController extends MyController
     public function crawlerContentAction()
     {
         $arr_url = array(
-            2 => 'ung-dung',
-            3 => 'he-thong',
-            4 => array('ios', 'android'),
-            5 => 'phan-cung',
-            //
-            7 => 'bi-an-chuyen-la',
-            8 => 'suc-khoe',
-            9 => 'kham-pha-thien-nhien',
-            14 => 'kham-pha-khoa-hoc',
-            //
-            11 => array('ki-nang', 'am-thuc'),
-            12 => 'lam-dep',
-            13 => array('meo-vat', 'chon-qua-tang', 'giang-sinh-noel', 'tet')
+            1 => 'van-hoa',
+            2 => 'nghe-thuat',
+            3 => 'doi-song',
+            4 => 'suc-khoe',
+            5 => 'tin-giai-tri',
+            6 => 'khoa-hoc-cong-nghe'
         );
         //
         foreach ($arr_url as $cate => $url) {
-            if (is_array($url)) {
-                foreach ($url as $link) {
-                    $this->__quantrimang($link, $cate);
-                }
-            } else {
-                $this->__quantrimang($url, $cate);
-            }
+            $this->__daikynguyen($url, $cate);
             sleep(5);
         }
 
@@ -924,23 +741,31 @@ class ConsoleController extends MyController
 
     }
 
-    public function __quantrimang($tail_url, $cate)
+    public function __daikynguyen($tail_url, $cate)
     {
         $serviceContent = $this->serviceLocator->get('My\Models\Content');
         $upload_dir = General::mkdirUpload();
 
-        for ($page = 1; $page < 2; $page++) {
-            $url_default = 'https://quantrimang.com/';
+        for ($page = 2; $page > 0; $page --) {
+            $url_default = 'http://www.daikynguyenvn.com/cat/';
             $url_crawler = $url_default . $tail_url;
             //
-            $url = $url_crawler . '?p=' . $page;
+            $url = $url_crawler . '/page/' . $page;
+
             $content = General::crawler($url);
             $dom = HtmlDomParser::str_get_html($content);
 
 
-            $dom_link_content = $dom->find('div.listview ul li.listitem a.title');
-            $dom_link_image = $dom->find('div.listview ul li.listitem a.thumb img');
-            $dom_description = $dom->find('div.listview ul li.listitem div.desc');
+            $default_link_dom = 'div#cattabs div#' . $tail_url . ' .item-list';
+
+            $tmp_content = $default_link_dom . ' div.post-thumbnail a';
+            $dom_link_content = $dom->find($tmp_content);
+            //
+            $tmp_image = $default_link_dom . ' div.post-thumbnail a img';
+            $dom_link_image = $dom->find($tmp_image);
+            //
+            $tmp_description = $default_link_dom . ' div.post-entry p.post-excerpt';
+            $dom_description = $dom->find($tmp_description);
 
             if (empty($dom_link_content) || empty($dom_link_image) || empty($dom_description)) {
                 break;
@@ -981,8 +806,7 @@ class ConsoleController extends MyController
 
             //
             foreach ($arr_link_content as $index => $item) {
-                $content = General::crawler(General::SITE_CRAWLER . $item);
-                //$content = General::crawler('http://news.sky.com/story/european-parliament-demands-brexit-talks-role-as-it-picks-president-10732038');
+                $content = General::crawler($item);
 
                 if ($content == false) {
                     continue;
@@ -991,9 +815,9 @@ class ConsoleController extends MyController
                 $html = HtmlDomParser::str_get_html($content);
 
                 $arr_data = array();
-                if ($html->find('div.content-detail', 0)) {
+                if ($html->find('div.post-inner', 0)) {
 
-                    $cont_title = trim(html_entity_decode($html->find("div.post-detail h1", 0)->plaintext));
+                    $cont_title = trim(html_entity_decode($html->find("div.post-head h1,post-title span", 0)->plaintext));
                     $arr_data['cont_title'] = $cont_title;
                     $arr_data['cont_slug'] = General::getSlug($cont_title);
 
@@ -1014,10 +838,8 @@ class ConsoleController extends MyController
                     $cont_description = str_replace(General::NAME_CRAWLER, General::SITE_NAME, $cont_description);
 
 
-                    $html->find('div.content-detail div#adsarticletop', 0)->innertext = '';
-                    $cont_detail = $html->find('div.content-detail', 0)->outertext;
+                    $cont_detail = $html->find('div#the-post-content', 0)->outertext;
                     $cont_detail = str_replace(General::NAME_CRAWLER, General::SITE_NAME, $cont_detail);
-                    $cont_detail = str_replace('<div id="adsarticletop" class="adbox"></div>', self::DIV_ADS, $cont_detail);
                     //
                     $link_content = $html->find("div.content-detail a");
 
@@ -1028,9 +850,8 @@ class ConsoleController extends MyController
                         }
                     }
 
-
                     //get image
-                    $arr_image = $html->find("div.content-detail img");
+                    $arr_image = $html->find("div#the-post-content img");
                     if (count($arr_image) > 0) {
                         foreach ($arr_image as $key => $img) {
                             $src = $img->src;
@@ -1070,7 +891,8 @@ class ConsoleController extends MyController
                     $arr_data['cate_id'] = $cate;
                     $arr_data['cont_views'] = 0;
                     $arr_data['cont_status'] = 1;
-                    $arr_data['cont_keyword'] = $this->searchFullText('keyword', $cont_title, 15);
+                    //$arr_data['cont_keyword'] = $this->searchFullText('keyword', $cont_title, 15);
+                    $arr_data['cont_keyword'] = '';
 
                     //insert Data
                     $id = $serviceContent->add($arr_data);
@@ -1199,7 +1021,7 @@ class ConsoleController extends MyController
 
     public function initKeywordAction()
     {
-        $string = 'Instagram,video,lưu,livestream,tính năng,tương tác,thú vị,biến mất,quá trình,người dùng,bản cập nhật,mới nhất,khả năng,comment,like,người xem,thiết bị,tính năng,facebook,tự động,ứng dụng,di động,live video,mặc định,vĩnh viễn,biến mất,cải thiện,quản lý,lựa chọn,phiên bản,Android,IOS,cập nhật,google assistant,tính năng,trợ lý ảo,điện thoại,tiện ích,giọng nói,ứng dụng,cuộc hẹn,remind,khẩu lệnh,quen thuôc,thực hiện,nút Home,đơn giản,gợi ý,ngón tay,cài đặt,chat,kết nối,trò chuyện,Siri,Apple,dữ liệu di động,địa điểm,du lịch,thao tác,hẹn giờ,chơi nhạc,bản đồ,màn hình,liên quan,công cụ,tự động,tìm kiếm,kết quả,đặt lịch,đặt chỗ,phím,danh bạ,biệt danh,nhân vật,yêu thích,xác nhận,,biểu tượng,người yêu,phát ra,âm thanh,khó chịu,yên lặng,góc phải,Bluetooth,ra lệnh,chế độ,máy bay,danh sách,mua hàng,chơi,hài hước,trích dẫn,mới nhất,Android SDK,hệ điều hành,mobile,thế giới,công nghệ,điên đảo,cơ hội,tiếp cận,may mắn,cung cấp,phiên bản,mô phỏng,chạy thử,,lưu,kích hoạt,tập tin,tệp nén,giải nén,thư mục,hướng dẫn,gỡ bỏ,truy cập,trang web,chính thức,trợ giúp,terminal,thông tin,chạy lệnh,đường dẫn,giải thích,phần mềm,smartphone,WiFi,hữu ích,tốc độ,thanh trạng thái,thời gian thực,mất mã,Passcode,đăng nhập,tài khoản,khôi phục,mật khẩu,tính năng,định vị,Click,mở khóa,kích hoạt,mã số,ra mắt,sự kiện,samsung,tổng hợp,kỹ thuật,thế hệ,tổng thể,màu sắc,trang tin,phục vụ,nhu cầu,bộ nhớ,nghiên cứu,toàn cầu,giá dự kiến,bảo hành,chính thức,chương trình,đặt hàng,mâu thuẫn,camera,lấy nét,cải tiến,điều kiện ánh sáng,camera kép,điểm yếu,bộ cảm biến,định dạng,chống nước,ứng dụng VR,quét vân tay,giắc cắm,bộ xử lý,pin,hiệu năng,tốc độ,hiệu suất,thị trường,hãng điện thoại,khe cắm,dung lượng pin,sạc pin,không dây,doanh thu,tăng trưởng,đồ gia dụng,nhà thông minh,phân tích,ngoại vi,bàn phím,máy quét,nhận dạng,đóng băng,nhiệt độ cao,biến hình,hình dáng,hiện tượng,giả tưởng,phù thủy,nhà khoa học,chất liệu,điều nghịch lý,phủ nano,bộ phim,giáng sinh,tết,gia đình,bạn gái,hóa trang,đạo diễn,năng lượng tái tạo,tiêu thụ,năng lượng,điện năng,kỷ lục,ghế nhựa,áp lực khí,không gian,chân không,áp lực,ảnh hưởng,độ bền,nhà sưu tầm,sở hữu,giá trị,bảo vật,rượu vang,đắt nhất thế giới,bán đấu giá,từ thiện,quảng cáo,súng ngắn,tổng thống,tiền cổ,xe hơi,điện ảnh,chạm khắc,xe mô tô,đồng hồ,kim cương,khôn ngoan,âm nhạc,nhạc cụ,cải thiện,chỉ số IQ,thân hình,vòng eo,giáo dục,sữa mẹ,trẻ em,trí nhớ,thuận tay trái,phản biện,sáng tạo,chiều cao,hài hước,tò mò,tư duy,nổi loạn,trí tuệ,dậy sớm,sản sinh,pha pitstop,thợ cơ khí,năng lượng gió,trang trại,tuabin gió,người giàu,hoàng đế,khối tài sản,tỉ phú,đạo Hồi,học giả,nghệ sĩ,đồ lưu niệm,lạm phát,phân hủy,trái đất,quỹ đạo,hành tinh,nhà khoa học,Basilica Therma,khách du lịch,pho tượng,La Mã,bức tượng,khai quật,tham quan,điện giật,chết người,trăng tròn,siêu trăng,ngôi sao,vũ trụ,bầu trời,trọng lực,cặp đôi,gái xinh,tâm lý con gái,ngoại hình,tích cách,tâm lý gia đình,quan hệ,độc thân,bệnh tim mạch,yêu nhầm người,tình yêu,dạy trẻ,đồ chơi Lego,tài năng,kỳ thi,kỹ năng,cuộc sống hiện nay,khắc nghiệt,tự tin,trò chuyện,làm sạch đồ,mẹo vặt,bí kíp,thủ thuật,phương pháp,căn hộ,không gian nhỏ,sắp xếp đồ,không gian làm việc,tiết kiệm';
+        $string = '';
         $arr_keyword = explode(',', $string);
 
         for ($i = 1; $i <= 3; $i++) {

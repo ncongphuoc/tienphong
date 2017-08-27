@@ -27,7 +27,7 @@ class Memcache {
                 'TCP_NODELAY' => true,
                 'CONNECT_TIMEOUT' => 3,
                 'RETRY_TIMEOUT' => 3,
-                'PREFIX_KEY' => 'HELLO_',
+                'PREFIX_KEY' => 'TIENPHONG_',
             ),
         );
 

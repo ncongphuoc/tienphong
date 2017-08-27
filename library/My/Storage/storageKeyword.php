@@ -102,6 +102,7 @@ class storageKeyword extends AbstractTableGateway {
                 . ' order by ' . $strOrder
                 . ' limit ' . $intLimit
                 . ' offset ' . ($intLimit * ($intPage - 1));
+
             return $adapter->query($query, $adapter::QUERY_MODE_EXECUTE)->toArray();
 
         } catch (\Exception $exc) {
@@ -223,7 +224,7 @@ class storageKeyword extends AbstractTableGateway {
             $strWhere .= ' AND key_slug = "' . $arrCondition['key_slug'] . '"';
         }
 
-        if(isset($arrCondition['in_key_id'])) {
+        if(isset($arrCondition['in_key_id']) && !empty($arrCondition['in_key_id'])) {
             $strWhere .= ' AND key_id IN (' . $arrCondition['in_key_id'] . ')';
         }
 

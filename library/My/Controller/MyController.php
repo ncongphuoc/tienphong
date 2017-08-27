@@ -171,20 +171,6 @@ class MyController extends AbstractActionController {
             $serviceCategory = $this->serviceLocator->get('My\Models\Category');
             $serviceContent = $this->serviceLocator->get('My\Models\Content');
             //
-
-            $arrCategory = $serviceCategory->getListCategory(
-                array(
-                    'cate_status' => 1
-                )
-            );
-
-            $arrCategoryInfo = array();
-            foreach ($arrCategory as $cate) {
-                $arrCategoryInfo[$cate['cate_id']] = $cate;
-            }
-            define('ARR_CATEGORY_INFO', serialize($arrCategoryInfo));
-
-            $tree_cate = array();
             $arrCategoryParent = $serviceCategory->getListCategory(
                 array(
                     'cate_status' => 1,
@@ -192,25 +178,6 @@ class MyController extends AbstractActionController {
                 )
             );
             define('ARR_CATEGORY_PARENT', serialize($arrCategoryParent));
-            // get cate child
-            $arr_category_child = array();
-            foreach ($arrCategoryParent as $category) {
-                $arrCategoryChild = $serviceCategory->getListCategory(
-                    array(
-                        'cate_status' => 1,
-                        'parent_id' => $category['cate_id']
-                    )
-                );
-                $arr_category_child[$category['cate_id']] = $arrCategoryChild;
-                //
-                $tree_cate[$category['cate_id']] = array();
-                foreach ($arrCategoryChild as $cate_child) {
-                    $tree_cate[$category['cate_id']][] = $cate_child['cate_id'];
-                }
-            }
-
-            define('ARR_CATEGORY_CHILD', serialize($arr_category_child));
-            define('ARR_TREE_CATEGORY', serialize($tree_cate));
 
             //get list content hot
 
