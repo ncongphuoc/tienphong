@@ -177,7 +177,11 @@ class MyController extends AbstractActionController {
                     'parent_id' => 0
                 )
             );
-            define('ARR_CATEGORY_PARENT', serialize($arrCategoryParent));
+            $arrCateogry = array();
+            foreach ($arrCategoryParent as $key => $cate) {
+                $arrCateogry[$key + 1] = $cate;
+            }
+            define('ARR_CATEGORY_PARENT', serialize($arrCateogry));
 
             //get list content hot
 

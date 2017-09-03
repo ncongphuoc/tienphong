@@ -21,13 +21,10 @@ class IndexController extends MyController
         $page = 1;
         $limit = 5;
 
-        $arr_category_info = unserialize(ARR_CATEGORY_INFO);
-        $tree_category = unserialize(ARR_TREE_CATEGORY);
-
         $list_cate_id = array(
-            General::CATEGORY_CONG_NGHE,
-            General::CATEGORY_CUOC_SONG,
-            General::CATEGORY_KHOA_HOC
+            General::CATEGORY_VAN_HOA,
+            General::CATEGORY_GIAI_TRI,
+            General::CATEGORY_DOI_SONG
         );
 
 
@@ -37,7 +34,7 @@ class IndexController extends MyController
         foreach ($list_cate_id as $category) {
             $arrCondition = array(
                 'cont_status' => 1,
-                'in_cate_id' => implode(',',$tree_category[$category])
+                'cate_id' => $category
             );
             $arr_content_new = $serviceContent->getListHomePage($arrCondition, $page, $limit, 'cont_id DESC', $arrFields);
             $arr_content_cate[$category] = $arr_content_new;

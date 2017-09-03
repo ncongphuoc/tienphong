@@ -41,9 +41,9 @@ class General {
     const SOCIAL_FACEBOOK_URL = 'https://www.facebook.com/tintuc360.me';
 
     //category
-    const CATEGORY_CONG_NGHE = 1;
-    const CATEGORY_KHOA_HOC = 6;
-    const CATEGORY_CUOC_SONG = 10;
+    const CATEGORY_VAN_HOA = 1;
+    const CATEGORY_DOI_SONG = 3;
+    const CATEGORY_GIAI_TRI = 5;
 
     const FILE_ERROR_SQL = 'SQL_Error';
 

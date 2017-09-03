@@ -1,5 +1,5 @@
 <?php
-$arr_category_info = unserialize(ARR_CATEGORY_INFO);
+$arr_category_info = unserialize(ARR_CATEGORY_PARENT);
 $arr_content = $this->arrContent;
 ?>
 <div id="adindexcenter" class="adbox" style="margin-bottom:20px;">
@@ -14,12 +14,12 @@ $arr_content = $this->arrContent;
         </script>
     </div>
 </div>
-<a class="hd" href="<?php echo $this->serverUrl() . $this->Url('category', ['cateSlug' => $arr_category_info[\My\General::CATEGORY_CONG_NGHE]['cate_slug'], 'cateId' => $arr_category_info[\My\General::CATEGORY_KHOA_HOC]['cate_id']]) ?>">
-    <?php echo $arr_category_info[\My\General::CATEGORY_CONG_NGHE]['cate_name'] ?>
+<a class="hd" href="<?php echo $this->serverUrl() . $this->Url('category', ['cateSlug' => $arr_category_info[\My\General::CATEGORY_VAN_HOA]['cate_slug'], 'cateId' => $arr_category_info[\My\General::CATEGORY_DOI_SONG]['cate_id']]) ?>">
+    <?php echo $arr_category_info[\My\General::CATEGORY_VAN_HOA]['cate_name'] ?>
 </a>
 <div class="listview clearfix">
     <ul>
-        <?php foreach ($arr_content[\My\General::CATEGORY_CONG_NGHE] as $content): ?>
+        <?php foreach ($arr_content[\My\General::CATEGORY_VAN_HOA] as $content): ?>
             <li class="listitem clearfix">
                 <a class="title" href="<?php echo $this->serverUrl() . $this->Url('view-content', ['contentSlug' => $content['cont_slug'], 'contentId' => $content['cont_id']]) ?>">
                     <?php echo $content['cont_title'] ?>
@@ -35,7 +35,7 @@ $arr_content = $this->arrContent;
         <?php endforeach; ?>
     </ul>
 </div>
-<a class="viewmore" href="<?php echo $this->serverUrl() . $this->Url('category', ['cateSlug' => $arr_category_info[\My\General::CATEGORY_CONG_NGHE]['cate_slug'], 'cateId' => $arr_category_info[\My\General::CATEGORY_CONG_NGHE]['cate_id']]) ?>">
+<a class="viewmore" href="<?php echo $this->serverUrl() . $this->Url('category', ['cateSlug' => $arr_category_info[\My\General::CATEGORY_VAN_HOA]['cate_slug'], 'cateId' => $arr_category_info[\My\General::CATEGORY_VAN_HOA]['cate_id']]) ?>">
     Xem thêm
 </a>
 

@@ -3,7 +3,7 @@ $paramsRouter = $this->getHelperPluginManager()->getServiceLocator()->get('Appli
 $routeName = $this->getHelperPluginManager()->getServiceLocator()->get('Application')->getMvcEvent()->getRouteMatch();
 $controller = $paramsRouter['__CONTROLLER__'];
 $action = $paramsRouter['action'];
-$arr_category = unserialize(ARR_CATEGORY_INFO);
+$arr_category = unserialize(ARR_CATEGORY_PARENT);
 ?>
 
 <!-- HEADER -->
